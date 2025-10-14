@@ -6,7 +6,6 @@ public class Produto {
     private String descricao;
     private Double preco;
     private Integer quantidade;
-    // Um objeto Produto "tem um" objeto Categoria.
     private Categoria categoria;
 
     public Long getId() { return id; }

@@ -7,7 +7,7 @@ public class MainCategoriaDelete {
     public static void main(String[] args) throws SQLException {
         CategoriaRepositoryJDBC categoriaRepo = new CategoriaRepositoryJDBC();
 
-        long idParaDeletar = 2L;
+        long idParaDeletar = 1L;
 
         System.out.println("Tentando deletar a categoria com ID " + idParaDeletar + "...");
         categoriaRepo.delete(idParaDeletar);
