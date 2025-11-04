@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: minimundo_user
+      POSTGRES_PASSWORD: minimundo_pwd
+      POSTGRES_DB: mini_mundo_db
+    ports:
+      - "5432:5432"
+    networks:
+      - dbnet
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongo_db
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - dbnet
+
+  redis:
+    image: redis:7
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - dbnet
+
+networks:
+  dbnet:
+    driver: bridge

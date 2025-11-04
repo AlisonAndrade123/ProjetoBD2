@@ -1,13 +1,8 @@
-package br.edu.ifpb.es.bd.modelo;
+package br.edu.ifpb.es.bd.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "produtos")
 public class Produto {
 
-    @Id
-    private String id; // MongoDB usa String para o _id
+    private Long id;
     private String nome;
     private String descricao;
     private Double preco;
@@ -16,7 +11,7 @@ public class Produto {
 
     public Produto() {}
 
-    public Produto(String id, String nome, String descricao, Double preco, Integer quantidade, Categoria categoria) {
+    public Produto(Long id, String nome, String descricao, Double preco, Integer quantidade, Categoria categoria) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -25,8 +20,8 @@ public class Produto {
         this.categoria = categoria;
     }
 
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
@@ -47,7 +42,7 @@ public class Produto {
     public String toString() {
         String nomeCategoria = (categoria != null) ? categoria.getNome() : "N/A";
         return "Produto{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +

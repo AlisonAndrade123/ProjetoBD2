@@ -1,4 +1,4 @@
-package br.edu.ifpb.es.bd;
+package br.edu.ifpb.es.bd.main;
 
 import br.edu.ifpb.es.bd.repository.ProdutoRepositoryJDBC;
 import java.sql.SQLException;

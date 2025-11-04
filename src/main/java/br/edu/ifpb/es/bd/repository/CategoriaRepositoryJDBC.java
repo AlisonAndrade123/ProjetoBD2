@@ -1,7 +1,7 @@
 package br.edu.ifpb.es.bd.repository;
 
 import br.edu.ifpb.es.bd.jdbc.ConnectionFactory;
-import br.edu.ifpb.es.bd.modelo.Categoria;
+import br.edu.ifpb.es.bd.model.Categoria;
 
 import java.sql.*;
 
