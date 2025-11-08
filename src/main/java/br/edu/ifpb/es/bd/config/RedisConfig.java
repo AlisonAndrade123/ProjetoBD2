@@ -13,7 +13,8 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory("redis", 6379);
+        // conecta no Redis local (localhost:6379)
+        return new LettuceConnectionFactory();
     }
 
     @Bean

@@ -12,32 +12,46 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class ProdutoService {
 
-    private static final String CACHE_PREFIX = "produto:";
-
     @Autowired
     private ProdutoRepository produtoRepository;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    private static final String PREFIXO = "produto:";
+
+    public Produto buscarProduto(String id) {
+        String chave = PREFIXO + id;
+
+        Produto produtoCache = (Produto) redisTemplate.opsForValue().get(chave);
+        if (produtoCache != null) {
+            System.out.println("✅ Produto encontrado no Redis!");
+            return produtoCache;
+        }
+
+        Optional<Produto> produtoBanco = produtoRepository.findById(id);
+        if (produtoBanco.isEmpty()) {
+            return null;
+        }
+
+        Produto produto = produtoBanco.get();
+
+        redisTemplate.opsForValue().set(chave, produto, 10, TimeUnit.MINUTES);
+        System.out.println("Produto salvo no Redis por 10 minutos.");
+
+        return produto;
+    }
+
     public Produto salvarProduto(Produto produto) {
         Produto salvo = produtoRepository.save(produto);
-        redisTemplate.opsForValue().set(CACHE_PREFIX + salvo.getId(), salvo, 10, TimeUnit.MINUTES);
+
+        // Remove do cache (caso já exista)
+        String chave = PREFIXO + salvo.getId();
+        redisTemplate.delete(chave);
+        System.out.println("🗑️ Cache limpo após atualização de produto.");
+
         return salvo;
     }
 
-    public Optional<Produto> buscarPorId(String id) {
-        String key = CACHE_PREFIX + id;
-        Produto produtoCacheado = (Produto) redisTemplate.opsForValue().get(key);
-
-        if (produtoCacheado != null) {
-            System.out.println("🔹 Produto encontrado no cache Redis");
-            return Optional.of(produtoCacheado);
-        }
-
-        System.out.println("🔸 Produto não encontrado no cache, buscando no MongoDB...");
-        Optional<Produto> produtoBanco = produtoRepository.findById(id);
-        produtoBanco.ifPresent(p -> redisTemplate.opsForValue().set(key, p, 10, TimeUnit.MINUTES));
-        return produtoBanco;
-    }
 }
+
