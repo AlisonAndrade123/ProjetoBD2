@@ -1,4 +1,3 @@
-# Código ATUALIZADO para o arquivo: application.yml
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5433/mini_mundo_db
@@ -17,7 +16,6 @@ spring:
       host: localhost
       port: 6379
 
-  # Configuração para o upload de arquivos via multipart
   servlet:
     multipart:
       enabled: true
@@ -27,7 +25,6 @@ spring:
 server:
   port: 8080
 
-# <<< SEÇÃO DE CONFIGURAÇÃO DO MINIO ADICIONADA AQUI >>>
 minio:
   url: http://localhost:9000
   accessKey: minio_admin
