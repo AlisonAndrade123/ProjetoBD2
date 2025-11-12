@@ -1,3 +1,4 @@
+// Código ATUALIZADO para o arquivo: ProdutoMongo.java
 package br.edu.ifpb.es.bd.model;
 
 import org.springframework.data.annotation.Id;
@@ -15,8 +16,12 @@ public class ProdutoMongo {
     private String descricao;
     private Double preco;
     private Integer quantidade;
-
     private List<Comentario> comentarios = new ArrayList<>();
+
+    // <<< NOVO CAMPO PARA A URL DA IMAGEM DO MINIO >>>
+    private String imageUrl;
+
+    // --- Getters e Setters ---
 
     public String getId() {
         return id;
@@ -64,5 +69,14 @@ public class ProdutoMongo {
 
     public void setComentarios(List<Comentario> comentarios) {
         this.comentarios = comentarios;
+    }
+
+    // <<< GETTER E SETTER PARA O NOVO CAMPO >>>
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -1,3 +1,4 @@
+// Código ATUALIZADO com a lógica do MinIO para o arquivo: ProdutoService.java
 package br.edu.ifpb.es.bd.service;
 
 import br.edu.ifpb.es.bd.model.Comentario;
@@ -6,6 +7,7 @@ import br.edu.ifpb.es.bd.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile; // <<< IMPORT ADICIONADO
 
 import java.util.List;
 import java.util.Optional;
@@ -20,14 +22,20 @@ public class ProdutoService {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
+    // <<< INJEÇÃO DE DEPENDÊNCIA PARA O MINIO SERVICE >>>
+    @Autowired
+    private MinioService minioService;
+
     private static final String PREFIXO = "produto:";
+
+    // --- Seus métodos existentes (buscarProduto, salvarProduto, etc.) continuam aqui ---
 
     public ProdutoMongo buscarProduto(String id) {
         String chave = PREFIXO + id;
 
         ProdutoMongo produtoCache = (ProdutoMongo) redisTemplate.opsForValue().get(chave);
         if (produtoCache != null) {
-            System.out.println("Produto encontrado no Redis!");
+            System.out.println("✅ Produto encontrado no Redis!");
             return produtoCache;
         }
 
@@ -49,7 +57,7 @@ public class ProdutoService {
 
         String chave = PREFIXO + salvo.getId();
         redisTemplate.delete(chave);
-        System.out.println("Cache limpo para o produto: " + salvo.getId());
+        System.out.println("🗑️ Cache limpo para o produto: " + salvo.getId());
 
         return salvo;
     }
@@ -72,7 +80,7 @@ public class ProdutoService {
 
             String chave = PREFIXO + salvo.getId();
             redisTemplate.delete(chave);
-            System.out.println("Cache limpo para o produto atualizado: " + salvo.getId());
+            System.out.println("🗑️ Cache limpo para o produto atualizado: " + salvo.getId());
 
             return salvo;
         }
@@ -85,7 +93,7 @@ public class ProdutoService {
 
             String chave = PREFIXO + id;
             redisTemplate.delete(chave);
-            System.out.println("Produto deletado e cache limpo para o ID: " + id);
+            System.out.println("🗑️ Produto deletado e cache limpo para o ID: " + id);
         }
     }
 
@@ -101,11 +109,38 @@ public class ProdutoService {
 
             String chave = PREFIXO + produtoId;
             redisTemplate.delete(chave);
-            System.out.println("Cache limpo para o produto (novo comentário): " + produtoId);
+            System.out.println("🗑️ Cache limpo para o produto (novo comentário): " + produtoId);
 
             return produtoSalvo;
         }
 
         return null;
+    }
+
+    // <<< MÉTODO NOVO PARA LIDAR COM UPLOAD DE IMAGEM >>>
+    public ProdutoMongo salvarImagem(String id, MultipartFile arquivo) {
+        // 1. Busca o produto no banco de dados
+        Optional<ProdutoMongo> produtoOpt = produtoRepository.findById(id);
+
+        if (produtoOpt.isEmpty()) {
+            return null; // Retorna null se o produto não for encontrado
+        }
+
+        // 2. Chama o MinioService para fazer o upload e obter a URL
+        String imageUrl = minioService.uploadFile(arquivo);
+
+        // 3. Associa a URL da imagem ao produto
+        ProdutoMongo produto = produtoOpt.get();
+        produto.setImageUrl(imageUrl);
+
+        // 4. Salva o produto atualizado no MongoDB
+        ProdutoMongo produtoSalvo = produtoRepository.save(produto);
+
+        // 5. Limpa o cache do Redis para este produto
+        String chave = PREFIXO + id;
+        redisTemplate.delete(chave);
+        System.out.println("🗑️ Cache limpo para o produto (nova imagem): " + id);
+
+        return produtoSalvo;
     }
 }

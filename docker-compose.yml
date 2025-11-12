@@ -1,7 +1,9 @@
+# Código ATUALIZADO para o arquivo: docker-compose.yml
 version: '3.8'
 
 services:
   postgres:
+    # ... (sua configuração do postgres continua igual)
     image: postgres:14
     container_name: postgres_db
     restart: always
@@ -15,6 +17,7 @@ services:
       - dbnet
 
   mongodb:
+    # ... (sua configuração do mongodb continua igual)
     image: mongo:6.0
     container_name: mongo_db
     restart: always
@@ -24,6 +27,7 @@ services:
       - dbnet
 
   redis:
+    # ... (sua configuração do redis continua igual)
     image: redis:7
     container_name: redis_cache
     restart: always
@@ -32,6 +36,27 @@ services:
     networks:
       - dbnet
 
+  # <<< SERVIÇO DO MINIO ADICIONADO AQUI >>>
+  minio:
+    image: minio/minio
+    container_name: minio_storage
+    restart: always
+    environment:
+      MINIO_ROOT_USER: minio_admin
+      MINIO_ROOT_PASSWORD: minio_password
+    ports:
+      - "9000:9000"  # Porta da API
+      - "9001:9001"  # Porta do Console Web
+    volumes:
+      - minio-data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - dbnet
+
 networks:
   dbnet:
     driver: bridge
+
+# <<< VOLUME DO MINIO DECLARADO AQUI >>>
+volumes:
+  minio-data:

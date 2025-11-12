@@ -1,3 +1,4 @@
+// Código ATUALIZADO para o arquivo: build.gradle
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.4'
@@ -24,6 +25,9 @@ dependencies {
 
     // 🧠 Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // 💾 MinIO (Armazenamento de Objetos) <<< DEPENDÊNCIA ADICIONADA AQUI
+    implementation 'io.minio:minio:8.5.10'
 
     // 🔧 Testes
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

@@ -1,11 +1,14 @@
+// Código FINAL E COMPLETO com o endpoint de upload para o arquivo: ProdutoController.java
 package br.edu.ifpb.es.bd.controller;
 
 import br.edu.ifpb.es.bd.model.Comentario;
 import br.edu.ifpb.es.bd.model.ProdutoMongo;
 import br.edu.ifpb.es.bd.service.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType; // <<< IMPORT ADICIONADO
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile; // <<< IMPORT ADICIONADO
 
 import java.util.List;
 
@@ -15,6 +18,8 @@ public class ProdutoController {
 
     @Autowired
     private ProdutoService produtoService;
+
+    // --- Seus endpoints existentes (criar, buscar, listar, etc.) continuam aqui ---
 
     @PostMapping
     public ResponseEntity<ProdutoMongo> criarProduto(@RequestBody ProdutoMongo produto) {
@@ -61,6 +66,21 @@ public class ProdutoController {
 
         if (produtoAtualizado == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(produtoAtualizado);
+    }
+
+    // <<< ENDPOINT NOVO PARA UPLOAD DE IMAGEM >>>
+    @PostMapping(value = "/{id}/imagem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProdutoMongo> uploadImagem(
+            @PathVariable String id,
+            @RequestParam("arquivo") MultipartFile arquivo) {
+
+        ProdutoMongo produtoAtualizado = produtoService.salvarImagem(id, arquivo);
+
+        if (produtoAtualizado == null) {
+            return ResponseEntity.notFound().build(); // Retorna 404 se o produto não for encontrado
         }
 
         return ResponseEntity.ok(produtoAtualizado);
