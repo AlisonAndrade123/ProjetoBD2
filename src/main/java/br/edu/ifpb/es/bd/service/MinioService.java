@@ -1,4 +1,3 @@
-// Local do arquivo: src/main/java/br/edu/ifpb/es/bd/service/MinioService.java
 package br.edu.ifpb.es.bd.service;
 
 import io.minio.MinioClient;
@@ -23,10 +22,8 @@ public class MinioService {
 
     public String uploadFile(MultipartFile file) {
         try {
-            // Gera um nome de arquivo único para evitar colisões
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
 
-            // Faz o upload do arquivo para o MinIO
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(bucketName)
@@ -36,7 +33,6 @@ public class MinioService {
                             .build()
             );
 
-            // Retorna a URL completa do arquivo salvo
             return minioUrl + "/" + bucketName + "/" + fileName;
         } catch (Exception e) {
             throw new RuntimeException("Erro ao fazer upload do arquivo para o MinIO", e);

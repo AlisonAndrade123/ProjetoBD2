@@ -1,4 +1,3 @@
-// Local do arquivo: src/main/java/br/edu/ifpb/es/bd/config/MinioConfig.java
 package br.edu.ifpb.es.bd.config;
 
 import io.minio.BucketExistsArgs;
@@ -31,7 +30,6 @@ public class MinioConfig {
                     .credentials(accessKey, secretKey)
                     .build();
 
-            // Verifica se o bucket existe. Se não, cria.
             boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (!bucketExists) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
