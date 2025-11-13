@@ -5,15 +5,25 @@ import br.edu.ifpb.es.bd.repository.CategoriaRepositoryJDBC;
 import java.sql.SQLException;
 
 public class MainCategoriaCreate {
-    public static void main(String[] args) throws SQLException {
-        CategoriaRepositoryJDBC categoriaRepo = new CategoriaRepositoryJDBC();
+
+    public static void main(String[] args) {
+        CategoriaRepositoryJDBC repository = new CategoriaRepositoryJDBC();
 
         Categoria novaCategoria = new Categoria();
-        novaCategoria.setNome("Eletrônicos (CRUD)");
+        novaCategoria.setNome("Headsets");
+        novaCategoria.setDescricao("Fones de ouvido com microfone para gamers e profissionais.");
 
-        categoriaRepo.save(novaCategoria);
+        try {
+            repository.save(novaCategoria);
 
-        System.out.println("Categoria criada com sucesso. Verifique o ID no banco de dados.");
-        System.out.println("Objeto salvo: " + novaCategoria);
+            System.out.println("==================================================");
+            System.out.println(">>> Categoria '" + novaCategoria.getNome() + "' salva com sucesso!");
+            System.out.println(">>> ID Gerado: " + novaCategoria.getId());
+            System.out.println("==================================================");
+
+        } catch (SQLException e) {
+            System.err.println("!!! Ocorreu um erro ao salvar a categoria.");
+            e.printStackTrace();
+        }
     }
 }

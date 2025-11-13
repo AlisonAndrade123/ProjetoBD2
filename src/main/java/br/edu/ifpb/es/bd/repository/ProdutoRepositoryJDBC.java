@@ -97,4 +97,22 @@ public class ProdutoRepositoryJDBC {
             stmt.executeUpdate();
         }
     }
+
+    // <<< MÉTODO PARA CHAMAR A FUNÇÃO PL/pgSQL >>>
+    public double getValorTotalEstoquePorCategoria(Long categoriaId) throws SQLException {
+        String sql = "SELECT calcular_valor_total_estoque_por_categoria(?)";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, categoriaId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble(1);
+                }
+            }
+        }
+        return 0.0;
+    }
 }
