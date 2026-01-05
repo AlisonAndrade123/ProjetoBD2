@@ -1,22 +1,23 @@
+# Código ATUALIZADO para o arquivo: application.yml (sem a seção liquibase)
 spring:
-  sql:
-    init:
-      mode: always
   datasource:
     url: jdbc:postgresql://localhost:5433/mini_mundo_db
     username: minimundo_user
     password: minimundo_pwd
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
+
   data:
     mongodb:
       uri: mongodb://localhost:27017/mini_mundo_db
     redis:
       host: localhost
       port: 6379
+
   servlet:
     multipart:
       enabled: true

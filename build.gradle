@@ -12,19 +12,30 @@ repositories {
 }
 
 dependencies {
+    // 🌱 Spring Boot básico
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    implementation 'org.postgresql:postgresql:42.7.7'
+    // 🐘 PostgreSQL + JDBC + JPA
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // <<< ESTA LINHA FOI ALTERADA PARA GARANTIR A ORDEM DE INICIALIZAÇÃO >>>
+    runtimeOnly 'org.postgresql:postgresql'
 
+    // 🍃 MongoDB
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
+    // 🧠 Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    // 💾 MinIO
     implementation 'io.minio:minio:8.5.10'
 
+    // 🌍 Dados Espaciais (PostGIS)
     implementation 'org.hibernate.orm:hibernate-spatial:6.5.2.Final'
 
+    // 📜 Versionamento de Banco de Dados (Liquibase)
+    implementation 'org.liquibase:liquibase-core'
+
+    // 🔧 Testes
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

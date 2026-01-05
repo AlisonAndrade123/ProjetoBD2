@@ -9,11 +9,13 @@ public class MainCategoriaCreate {
     public static void main(String[] args) {
         CategoriaRepositoryJDBC repository = new CategoriaRepositoryJDBC();
 
+        // Criamos o objeto e definimos os dados
         Categoria novaCategoria = new Categoria();
-        novaCategoria.setNome("Headsets");
-        novaCategoria.setDescricao("Fones de ouvido com microfone para gamers e profissionais.");
+        novaCategoria.setNome("Placas de Vídeo");
+        novaCategoria.setDescricao("Placas de vídeo para jogos e trabalho profissional.");
 
         try {
+            // Chamamos o método save para inserir no banco
             repository.save(novaCategoria);
 
             System.out.println("==================================================");
