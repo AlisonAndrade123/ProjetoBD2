@@ -1,5 +1,9 @@
-# Código ATUALIZADO para o arquivo: application.yml (sem a seção liquibase)
 spring:
+  # Configuração simplificada: Liquibase cuida de tudo sozinho agora
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
   datasource:
     url: jdbc:postgresql://localhost:5433/mini_mundo_db
     username: minimundo_user

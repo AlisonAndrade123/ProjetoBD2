@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="6-insert-initial-data" author="alison">
+        <sql>
+            -- Limpa dados antigos para evitar duplicatas
+            DELETE FROM produtos;
+            DELETE FROM categorias;
+            DELETE FROM lojas;
+
+            -- Inserindo Categorias
+            INSERT INTO categorias (id, nome, descricao) VALUES (1, 'Ferramentas', 'Ferramentas manuais e elétricas');
+            INSERT INTO categorias (id, nome, descricao) VALUES (2, 'Eletrônicos', 'Dispositivos eletrônicos e acessórios');
+            INSERT INTO categorias (id, nome, descricao) VALUES (3, 'Jardinagem', 'Equipamentos e suprimentos para jardim');
+
+            -- Inserindo Produtos
+            INSERT INTO produtos (nome, descricao, preco, quantidade, categoria_id) VALUES ('Martelo', 'Martelo de unha', 35.50, 50, 1);
+            INSERT INTO produtos (nome, descricao, preco, quantidade, categoria_id) VALUES ('Furadeira', '500W Impacto', 250.00, 20, 1);
+            INSERT INTO produtos (nome, descricao, preco, quantidade, categoria_id) VALUES ('Smartphone', '128GB Pro', 1800.00, 30, 2);
+
+            -- Inserindo Lojas
+            INSERT INTO lojas (nome, localizacao) VALUES ('Loja A - Ponto de Cem Réis', ST_SetSRID(ST_MakePoint(-34.8610, -7.1153), 4326));
+            INSERT INTO lojas (nome, localizacao) VALUES ('Loja B - Orla de Tambaú', ST_SetSRID(ST_MakePoint(-34.8256, -7.1150), 4326));
+            INSERT INTO lojas (nome, localizacao) VALUES ('Loja C - Bessa Shopping', ST_SetSRID(ST_MakePoint(-34.8300, -7.0783), 4326));
+        </sql>
+    </changeSet>
+</databaseChangeLog>

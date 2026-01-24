@@ -9,7 +9,7 @@ public class MainProdutoCreate {
     public static void main(String[] args) throws SQLException {
         ProdutoRepositoryJDBC produtoRepo = new ProdutoRepositoryJDBC();
 
-        long idDaCategoriaExistente = 3L;
+        long idDaCategoriaExistente = 1L;
 
         Categoria categoriaAssociada = new Categoria();
         categoriaAssociada.setId(idDaCategoriaExistente);

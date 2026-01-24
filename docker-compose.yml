@@ -2,13 +2,16 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgis/postgis:14-3.4
+    # Usando uma imagem mais completa que habilita extensões automaticamente
+    image: kartoza/postgis:14
     container_name: postgres_db
     restart: always
     environment:
       POSTGRES_USER: minimundo_user
       POSTGRES_PASSWORD: minimundo_pwd
       POSTGRES_DB: mini_mundo_db
+      # Esta variável diz para o Docker instalar o PostGIS logo que ligar
+      POSTGRES_MULTIPLE_EXTENSIONS: postgis
     ports:
       - "5433:5432"
     networks:
